@@ -1,0 +1,123 @@
+body {
+background: #fff;
+color: #333;
+font: 300 100.1% "Helvetica Neue", Helvetica, "Arial Unicode MS", Arial, sans-serif;
+}
+
+#nextbutton{
+    position: absolute;
+    top: 160px;
+    left:82%;
+    z-index:0;
+}
+
+#scanbutton{
+/*    position:relative;
+*/    
+    position: absolute;
+    left: 47%;
+    top:85%;
+    z-index: 1000;
+    -moz-box-shadow:inset 0px 1px 0px 0px #c1ed9c;
+    -webkit-box-shadow:inset 0px 1px 0px 0px #c1ed9c;
+    box-shadow:inset 0px 1px 0px 0px #c1ed9c;
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #9dce2c), color-stop(1, #8cb82b) );
+    background:-moz-linear-gradient( center top, #9dce2c 5%, #8cb82b 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#9dce2c', endColorstr='#8cb82b');
+    background-color:#9dce2c;
+    -webkit-border-top-left-radius:3px;
+    -moz-border-radius-topleft:3px;
+    border-top-left-radius:3px;
+    -webkit-border-top-right-radius:3px;
+    -moz-border-radius-topright:3px;
+    border-top-right-radius:3px;
+    -webkit-border-bottom-right-radius:3px;
+    -moz-border-radius-bottomright:3px;
+    border-bottom-right-radius:3px;
+    -webkit-border-bottom-left-radius:3px;
+    -moz-border-radius-bottomleft:3px;
+    border-bottom-left-radius:3px;
+    text-indent:0;
+    border:1px solid #83c41a;
+    display:inline-block;
+    color:#ffffff;
+    font-family:Arial;
+    font-size:11px;
+    font-weight:bold;
+    font-style:normal;
+    height:28px;
+    line-height:23px;
+    width:85px;
+    text-decoration:none;
+    text-align:center;
+    text-shadow:1px 1px 0px #689324;
+}
+#nextgamebutton{
+      position:relative;
+    left: 83%;
+    top:85%;
+    z-index: 1000;
+}
+
+#slider{
+    position:relative;
+    width: 20%;
+}
+#slider_lefttext{
+    position:relative;
+    left:30%;
+    top:30%;
+}
+#slider_righttext{
+    position:relative;
+    left:60%;
+    top:30%;
+}
+#slider_submit_button{
+    position:relative;
+    left:50%;
+    top:40%;
+/*    width:5%;
+}
+#scanbutton:active {
+  background-color:#67b4cf;
+  border:1px inset #1d659f;
+  color:#e0ffaf;
+/*  padding:4px 2px 2px 4px;
+  /*margin:1px;*/
+  text-decoration:none;
+}
+
+#tutorial {                    
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px; /*make rounded edges on box*/
+    border: solid 1px #333;
+    height: 170px;
+    left: 10%;
+    position: relative;
+    top: 20px;
+    width: 76%;
+    text-align: center; 
+}
+#find_the_number{
+    height: 140px;
+    left: 10%;
+    position: relative;
+    top: 20px;
+    width: 76%;
+    text-align: center;  
+}
+#canvas_container{
+    width: 500px;  
+    border: 1px 
+    solid #aaa;
+}
+/*#copy {
+    bottom: 0;
+    font: 300 .7em "Helvetica Neue", Helvetica, "Arial Unicode MS", Arial, sans-serif;
+    position: absolute;
+    right: 1em;
+    text-align: center;
+}*/
+
+
