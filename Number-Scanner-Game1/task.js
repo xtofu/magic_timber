@@ -2,6 +2,32 @@
 //straight-to-task version.
 
 window.onload = function () {
+    //naive, but pretty, drag function. future: transforms should add ("..."+) rather than replace.
+    Raphael.el.draggable = function () {
+    var me = this, //reference to the set to use inside the drag functions
+        //relative coordinates: 
+        ox = 0, //origin
+        oy = 0,
+        lx = 0, //current location
+        ly = 0,
+        moveFunc = function (dx, dy) {
+            lx = dx + ox; //update current location
+            ly = dy + oy;
+            me.transform('t' + lx + ',' + ly);
+        },
+        startFunc = function () {},
+        endFunc = function () {
+            ox = lx;
+            oy = ly;
+        };
+    this.drag(moveFunc, startFunc, endFunc);
+};
+
+Raphael.st.draggable = function () {
+    this.forEach(function (setMember) {
+        setMember.draggable();
+    });
+};
 
     var R = Raphael(0, 0, "100%", "100%"),
         line_height = 75;
