@@ -1,10 +1,9 @@
 //Main task functionality. The various instructions_x.js files contain pieces of this
-//straight-to-task version.
 
 window.onload = function () {
 
     var R = Raphael(0, 0, "100%", "100%"),
-        line_height = 75;
+        line_height = 75; //,,,
         h = window.innerHeight,
         w = window.innerWidth,
         nll = .66*w, //number line length
@@ -18,7 +17,23 @@ window.onload = function () {
     var urlParams = parseURLParams(urlString);
 
     //crosshairs image
-    var c = R.image("imagebot2.svg", .8*w, (line_height-35)*.01*h, .03*w, .03*w).data('pos', [.48*w,(line_height+15)*.01*h]);
+    makeClaw = function(x,y){
+        R.setStart();
+        var arm = R.path('M'+x+','+y+'l30,60l-30,60l5,0l40,-60,l-30,-60').attr({fill:'#999',stroke:'#555','stroke-width':3});
+                    var arm2= R.path('M'+x+','+y+'l-30,60l30,60l-5,0l-40,-60,l30,-60').attr({fill:'#999',stroke:'#555','stroke-width':3}),
+                        pull = R.path('M'+x-15+','+y+'v-100 M'+x+15+','+y+'v-100').attr({stroke:'#333','stroke-width':3}),
+                        ring = R.circle(x,y,15).attr({fill:'#093', stroke:'#060','stroke-width':3}),
+                        rring = R.circle(x,y,5).attr({fill:'#999', stroke:'#555','stroke-width':2}),
+                        carry = R.circle(x,1.5*y,70).attr({fill:'#000',opacity:0}),
+                        claw = R.setFinish();
+                    return claw;
+                };
+    var claw = makeClaw(0.66*w,0.33*h);
+    var c = claw.getBBox();
+
+
+    
+        //var c = R.image("imagebot2.svg", .8*w, (line_height-35)*.01*h, .03*w, .03*w).data('pos', [.48*w,(line_height+15)*.01*h]);
 
     var actual_efficacies;    
     makeScanners = function(sizes, efficacies)
@@ -34,7 +49,7 @@ window.onload = function () {
             R.text(.09*w,(line_height-(38 -z*5))*.01*h, String(efficacies[i]*100+'%')).attr({fill:'#333'});
             z++;
         }
-        return scnrs;    
+        return scnrs;       
     }
     if (parent.topframe.trial == parent.topframe.total_trials-1)
     {
@@ -84,7 +99,7 @@ window.onload = function () {
 
     //JSON object that gets written to 'data' field in mongodb.
     var output = {'trial':null, 'available_scanners':[len, effic], 'clicks':[], 'guess':null, 'target':null, 'certainty':null, 'correct':null, 'time':time};
-
+/*
     //crosshairs functionality
     c.node.onclick = function()
     {
@@ -104,7 +119,7 @@ window.onload = function () {
             top_alert("<p>You may only move the crosshairs after you have used at least one scanner on the number line.</p>", "<p>Find the number<p>");
         }
     }
-
+*/
     //controls click of 'scan' button. Don't change variable name here; it's called in other files.
     mainButtonClick = function()
     {
@@ -137,7 +152,7 @@ window.onload = function () {
             }
 
             //Allows scanner and crosshairs objects to be moveable
-            R.set(r,g,b,p,c).drag(move, start, up);
+            R.set(r,g,b,p).drag(move, start, up);
         }
         else //Don't scan.
         {
@@ -172,6 +187,7 @@ window.onload = function () {
             parent.topframe.document.getElementById("tutorial").innerHTML = old_text;
         }, 2000);
     };
+    
     nextButtonClick = function()
     {
         //governs click of 'next' button
@@ -205,7 +221,6 @@ window.onload = function () {
             }, 500);
         }
     };
-
 
     //Helper functions//
 
@@ -581,3 +596,43 @@ function shuffle(array) {
     }
     return array;
 }
+
+Raphael.st.draggable = function () {
+    var me = this, //reference to the set to use inside the drag functions
+        //relative coordinates: 
+        ox = 0, //origin
+        oy = 0,
+        lx = 0, //current location
+        ly = 0,
+        moveFunc = function (dx, dy) {
+            lx = dx + ox; //update current location
+            ly = dy + oy;
+            me.transform('t' + lx + ',' + ly);
+        },
+        startFunc = function () {},
+        endFunc = function () {
+            ox = lx;
+            oy = ly;
+        };
+    this.drag(moveFunc, startFunc, endFunc);
+};
+
+Raphael.el.draggable = function () {
+    var me = this, //reference to the set to use inside the drag functions
+        //relative coordinates: 
+        ox = 0, //origin
+        oy = 0,
+        lx = 0, //current location
+        ly = 0,
+        moveFunc = function (dx, dy) {
+            lx = dx + ox; //update current location
+            ly = dy + oy;
+            me.transform('t' + lx + ',' + ly);
+        },
+        startFunc = function () {},
+        endFunc = function () {
+            ox = lx;
+            oy = ly;
+        };
+    this.drag(moveFunc, startFunc, endFunc);
+};
