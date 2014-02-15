@@ -189,7 +189,7 @@ function NextClick()
 	{
 		parent.topframe.document.getElementById("nextbutton").style.display="block";
 	}
-	if (equal(state, [1,1])) // moves us from tutorial to real game. // Use [21,10] for familiarization version,
+	if (equal(state, [21,10])) // moves us from tutorial to real game. // Use [21,10] for familiarization version,
     //[12,6] for w/o familiarization version, and [1,1] for straight-to-task version.
 	{
 		parent.topframe.document.getElementById("tutorial").innerHTML="<p>Find the number!</p>";
@@ -239,8 +239,9 @@ function ScanClick()
 function ChangeBoth(state)
 {
 	//checks change_both_list below; if state is in the list, returns 'true'.
-	//[10,5] is the beginning of the scanner efficacies tutorial.
-	change_both_list = [[0,0],[1,1],[3,2],[5,3], [9,4],[12,5], [14,6], [16,7], [18,8], [20,9]];
+	//[10,5] is the beginning of the scanner efficacies tutorial; used for straight-to-task
+	change_both_list = [[10,5]];
+	//[[0,0],[1,1],[3,2],[5,3], [9,4],[12,5], [14,6], [16,7], [18,8], [20,9]];
 	if (short_list_in_long_list(state, change_both_list))
 		return true;
 	else
@@ -249,8 +250,7 @@ function ChangeBoth(state)
 function ChangeTop(state)
 {
 	//functions by exception; returns true as long as state is *not* in the list below.
-	change_top_list = [10,5]
-	//[[8,4],[9,4],[10,5],[11,5],[12,5],[13,6],[14,6],[15,7],[16,7],[17,8],[18,8],[20,8]];
+	change_top_list = [[8,4],[9,4],[10,5],[11,5],[12,5],[13,6],[14,6],[15,7],[16,7],[17,8],[18,8],[20,8]];
 	if (!short_list_in_long_list(state, change_top_list))
 	{
 		return true;
