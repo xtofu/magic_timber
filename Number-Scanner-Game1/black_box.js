@@ -93,23 +93,20 @@ window.onload = function() {
     		R.set(ship2, butt2).draggable(),
     		R.set(ship3, butt3).draggable(),
     		R.set(ship4, butt4).draggable());
-    	alert(scnrs[0]); //why is this undefined??
     	//scnrs[1].mouseover(function() {this[2].animate(appear)})
-
+    		//why is this undefined??
     	//scnrs.forEach(function(scnr) {
     	//	scnr.hover(
     	//		function() {this[1].this[2].animate(appear)},
     	//		function() {this[1].this[2].animate(disappear)});
     	//})
 /*
-    	scnrs.forEach(function(scanner) {
-    		scanner.push(makeButton(scanner));
+    	scnrs.forEach(function(scnr) {
+    		scnr.push(makeButton(scnr));
     	});
 */
     	return (scnrs);
     };
-
-
 
     var makeButton = function (scanner) {
     	var box = scanner.getBBox(),
@@ -120,9 +117,6 @@ window.onload = function() {
     			opacity: 0.0
     		});
     	return (button);
-//    	scanner.dblclick(function(){
-//    		button
-//    	})
 
     };
 
