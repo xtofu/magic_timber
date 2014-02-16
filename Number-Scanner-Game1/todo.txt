@@ -1,0 +1,14 @@
+*all objects will likely be sets including path elements*
+
+store data for each scanner + claw:
+
+snap: y-coord below 'line'
+outside: y,x-coord outside frame
+region: x-coords of region sandbox covered
+	when scan button or claw is activated
+
+
+how to store it?
+https://stackoverflow.com/questions/6627105/raphael-js-custom-attributes
+
+can you just do scanners[0].snap = 0 ?
