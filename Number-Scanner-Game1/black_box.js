@@ -1,15 +1,15 @@
 //black_box.js
 
 // useful moves:
-var appear = Raphael.animation({opacity:1.0}, 20);
-var disappear = Raphael.animation({opacity:0.0}, 20);
+var appear = Raphael.animation({opacity:1.0}, 1);
+var disappear = Raphael.animation({opacity:0.0}, 1);
 
 window.onload = function() {
   // create paper and make drawing functions
   	var R = Raphael(0, 0, '100%', '100%');
 	h = 480; //window.innerHeight,
 	w = 800; //window.innerWidth;
-	line = 600;
+	line = 360;
 
 	var style = {
 		fill: "#444",
@@ -20,7 +20,7 @@ window.onload = function() {
 
 	var makeSandbox = function () {
 		R.setStart();
-		var sandbox1 = R.rect(0.1*w, 0.7*h, 0.8*w, 100).attr(style),
+		var sandbox1 = R.rect(0.1*w, line, 0.8*w, 100).attr(style),
 		sandbox = R.setFinish();
 		return (sandbox);
 	};
@@ -58,7 +58,8 @@ window.onload = function() {
 			scnr[0].data({
 				snap: 0,
 				outside: 0,
-				somethingelse: 0 
+				somethingelse: 0,
+				scnr : 1 
 			});
 		});
 		return (scnrs);
@@ -70,15 +71,20 @@ window.onload = function() {
 			fill: '#093',
 			'stroke-width': 2,
 			stroke: '#fff',
-			opacity: 1.0
+			opacity: 0.0
 		});
 		return (button);
 
 	};
 
 	var makeClaw = function (x, y) {
-	    R.setStart();
-	    var arm = R.path('M' + x + ',' + y + 'l30,60l-30,60l5,0l40,-60,l-30,-60').attr({
+		var carry = R.path('M' + x + ',' + y + 'm-70,0a70,70,0,1,0,140,0a70,70,0,1,0,-140,0z')
+			.attr({
+		//R.circle(x, 1.5 * y, 70).attr({
+            	fill: '#000',
+            	opacity: 0.2
+        	}).toFront(),
+	    	arm = R.path('M' + x + ',' + y + 'l30,60l-30,60l5,0l40,-60,l-30,-60').attr({
 	            fill: '#999',
 	            stroke: '#555',
 	                'stroke-width': 3
@@ -88,27 +94,30 @@ window.onload = function() {
 	                stroke: '#555',
 	                'stroke-width': 3
 	            }),
-	        ring = R.circle(x, y, 15).attr({
+	        ring = R.path('M' + x + ',' + y + 'm-15,0 a15,15,0,1,0,30,0a15,15,0,1,0,-30,0z')
+	        	.attr({
+	        //R.circle(x, y, 15).attr({
 	                fill: '#093',
 	                stroke: '#060',
 	                'stroke-width': 3
 	            }),
-	        rring = R.circle(x, y, 5).attr({
+	        rring = R.path('M' + x + ',' + y + 'm-5,0 a5,5,0,1,0,10,0a5,5,0,1,0,-10,0z')
+	        	.attr({
+	        //R.circle(x, y, 5).attr({
 	                fill: '#999',
 	                stroke: '#555',
 	                'stroke-width': 2
 	            }),
-	        pull = R.path('M' + (x - 15) + ',' + y + 'l0,-' + 2*h + 'm30,0l0,' + 2*h + 'z').attr({fill: '#111', stroke: '#333',  'stroke-width': 2}),
-	        carry = R.circle(x, 1.5 * y, 74).attr({
-	                fill: '#000',
-	                opacity: 0
-	            }).toFront(),
-	        claw = R.setFinish();
-	        claw.data({
+	        //pull = R.path('M' + (x - 15) + ',' + y + 'l0,-' + 2*h + 'm30,0l0,' + 2*h + 'z').attr({fill: '#111', stroke: '#333',  'stroke-width': 2}),
+	        claw = R.set(carry, arm, arm2, ring, rring);
+	        /*claw.data({
 				snap: 0,
 				outside: 0,
 				somethingelse: 0 
 			});
+			claw.dblclick(function () {
+				alert('splash screen');
+		});*/
 	    return (claw);
 	};
 
@@ -116,30 +125,11 @@ window.onload = function() {
 	var frame = R.rect(0,0,800,480),
 		sandbox = makeSandbox(),
 		scanners = makeScanners(),
-		claw = makeClaw(0.5*w, 0.2*h);
-		claw.dblclick(function () {
-			alert('splash screen');
-		});
-	    claw.box = claw.getBBox();
+		claw = makeClaw(0.5*w, 0.1*h);
 		claw.drag(onSetMove(claw), onSetStart(claw), onSetStop(claw));
-		//scanners.drag(onMove, onStart, onStop);
-
-		//claw.onDragOver(function() {
-		//	claw.attr({fill: "blue"});
-		//});
-
-/*
-	for (var i = 0; i < scanners.length; i++) {
-		if (scanners[i].getBBox().y2 > line -20) {
-			alert('for if');
-			scanners[i][1].animate(appear);
-		 }
-		 //else {scnrs[i][1].animate(appear)}
-		};
-		*/
-
 };
-// drag functions! see drag.js //
+
+// drag functions! please see drag.js //
 //----------------------------------------------------------------------------
 function onStart(x, y, event) {
 	start(this, x, y, event);
@@ -165,14 +155,13 @@ function onSetStart(object) {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function onSetMove(object) {
 	return function(dx, dy, x, y, event) {    // store reference to the set in the closure (there is no way of referencing it from Elements)
-		/*
-		if (object.getBBox().y2 > line) {
-			object.data('snap') == 1
-		}
-		else {
-			object.data('snap') == 0
-		};
-		*/ //it makes it too slow!
+		setNow = object;
+		setBox = setNow.getBBox();		//used in other drag fxns
+		// slow and sticky parameters
+		//offleft = (setBox.x) < 0 ? 1 : 0;
+		//offright = (setBox.x2) > w ? 1 : 0;
+		//offtop = (setBox.y) < 0 ? 1 : 0;
+		offbot = (setBox.y2 + dy) > line ? 1 :0;
 		move(object, dx, dy, x, y, event);
 		
 	};

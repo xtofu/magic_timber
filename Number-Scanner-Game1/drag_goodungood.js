@@ -1,26 +1,20 @@
 //----------------------------------------------------------------------------
 // drag.js //
-// paths and circles/rects don't move exactly together
-// for now, i'm changing everything to paths
-
 function setObjectXY(object, x, y) {
 	switch(object.type) {
 		case 'circle': {
 			object.x = (x - object.attr('cx'));
 			object.y = (y - object.attr('cy'));
-			//console.log('circle.x='+object.x);
 		}
 		break;
 		case 'path': {
 			object.x = (x - object.getBBox().x);
 			object.y = (y - object.getBBox().y);
-			//console.log('path.x='+object.x);
 		}
 		break;
 		default: {
 			object.x = (x - object.attr('x'));
 			object.y = (y - object.attr('y'));
-			//console.log('rect.x='+object.x);
 		}
 	}
 };
@@ -32,7 +26,7 @@ function updateObjectAttr(object, x, y) {
 			// get offsets of object within set
 			var offcx = object.attr('cx') - setBox.x,
 				offcy = object.attr('cy') - setBox.y;
-				rx = object.attr('rx'),
+				//rx = object.attr('rx'),
 				//ry = object.attr('ry'),
 			//these deltas could be carried through the fxns instead of defining it here
 			dx = (x - object.attr('cx')) - object.x;
@@ -53,32 +47,36 @@ function updateObjectAttr(object, x, y) {
 		break;
 		case 'path': {
 			// get offsets of object within set
-			//var box = object.getBBox(),
-			//	offx = box.x - setBox.x,
-			//	offy = box.y - setBox.y;
+			var box = object.getBBox(),
+				offx = box.x - setBox.x,
+				offy = box.y - setBox.y;
 
-			dx = (x - object.getBBox().x) - object.x;
-			dy = (y - object.getBBox().y) - object.y;
+			dx = (x - box.x) - object.x;
+			dy = (y - box.y) - object.y;
+
+			//lx = dx ;
+			//ly = dy ;
 
 			if (setBox.x + dx < 0) {lx = 0;}
 			else if (setBox.x2 + dx  > 800) {lx = 0;}
 			else {lx = dx;}
 
-			if (setBox.y + dy < 0) {ly = 0;}
+			if (setBox.y  + dy < 0) {ly = 0;}
 			else if (setBox.y2 + dy  > line) {ly = 0;}
 			else {ly = dy;}
-/*
-			if (offleft) {lx = 0;}
-			else if (offright) {lx = 0;}
-			else {lx = dx;}
 
-			if (offtop) {ly = 0;}
-			else if (offbot) {ly = 0;}
-			else {ly = dy;}
-*/
+
 			object.attr({path: Raphael.transformPath(object.attr('path'), '...T' + lx + ',' + ly)});
-			//console.log(box.x);
+			//console.log(object.attr('path'));
+			};
+
+			/*
+			if (y > 200) {
+			object.attr({path: Raphael.transformPath(object.attr('path'), '...T' + dx + ',' + 0)})
 			}
+			else {object.attr({path: Raphael.transformPath(object.attr('path'), '...T' + dx + ',' + ly)})
+			}
+		*/
 		break;
 		default: {
 			// get offsets of object within set
@@ -97,25 +95,29 @@ function updateObjectAttr(object, x, y) {
 			else if (setBox.x2 + dx  > 800) {lx = 800 + offx - setBox.width;}
 			else {lx = object.attr('x') + dx;}
 
-			//y direction has other fxns
 			if (offbot) {
-				if (setNow[0].data('scnr')) {
-					//do SCAN functions
-					setNow[1].animate(appear)		
-				};
+				if (setNow[0].data('scnr')) {setNow[1].animate(appear)};
 				ly = line + offy - setBox.height;
 			}
 			else {
-				if (setNow[0].data('scnr')) {
-					//undo SCAN functions
-					setNow[1].animate(disappear)	
+				if (setNow[0].data('scnr'))} {setNow[1].animate(disappear)};
+				if (setBox.y  + dy < 0) {ly = 0 + offy;}
+				else {ly = object.attr('y') + dy;};
 				};
-				if (setBox.y  + dy < 0) {ly = 0 + offy;} //offtop
-				else {ly = object.attr('y') + dy;}	//free movement
-				}; 	
+
+
+			}
+
+			if (setBox.y  + dy < 0) {ly = 0 + offy;}
+			else if (offbot) {
+				ly = line + offy - setBox.height;
+				if (setNow[0].data('scnr')) {setNow[1].animate(appear)};
+			}
+			else {ly = object.attr('y') + dy;}
+
 			object.attr({x: lx, y: ly});
-		};
-	};
+		}
+	}
 };
 
 //----------------------------------------------------------------------------
