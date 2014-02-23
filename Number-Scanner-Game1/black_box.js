@@ -7,8 +7,8 @@
 	* moveables stay in frame, and can't go past sandbox
 		(not quite sticky though)
 	* scanners properly SCAN and display hits based on scanner attr
-		(run diagnostics to check)
-	* scanners only rudimentially display size (half ellipse gray shadow)
+		(need to run diagnostics to check)
+	* scanners only rudimentially indicate size (half ellipse gray shadow)
 
 	need:
 	* STAMP
@@ -127,6 +127,8 @@ window.onload = function() {
     	ufo[0].data({
 			which: 'ship',
 			online: 0,
+			snapto: 0,
+			unsnap: 0,
     		size: size,
     		length: size*length,
     		eff: stars2eff(stars),
@@ -168,7 +170,7 @@ window.onload = function() {
 			//scanner[0].data({ });
 			scanner.dblclick(function () {
     			console.log(scanner.getBBox());
-    			alert(scanner[0].data('xOrigin'));
+    			console.log('online: '+scanner[0].data('online')+' unsnap: '+scanner[0].data('unsnap')+'');
     		});
 			////SCAN FUNCTION//// //maybe put outside this?
     		scanner[9].click(function () {
@@ -278,12 +280,15 @@ window.onload = function() {
 	    claw.data({
 				which: 'claw',
 				online: 0,
+				snapto: 0,
+				unsnap: 0,
 				button: 0,
 				hit: 0,
 				fault: 0
 			});
 		claw.dblclick(function () {
 				console.log(claw.getBBox());
+				console.log('online: '+claw[0].data('online')+' unsnap: '+claw[0].data('unsnap')+'');
 				//alert(claw[0].data('online'));
 				GUESS(claw);
 		});
@@ -388,6 +393,8 @@ function stars2eff (stars) {
 // useful moves:
 var appear = Raphael.animation({opacity:1.0}, 1);
 var disappear = Raphael.animation({opacity:0.0}, 1);
+var online = 0;
+var unsnap = 0;
 /*
 var grow = Raphael.animation({		
 			opacity: 1.0,
